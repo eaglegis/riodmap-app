@@ -1,9 +1,9 @@
-﻿
+﻿import { loadCss, loadModules } from 'esri-loader';
+import { esriCSS, esriOptions } from './config';
 import React, { Component, ComponentState } from 'react';
 import * as ReactDOM from 'react-dom';
 import { WebMap, Map } from '@esri/react-arcgis';
 import { MapProps } from '@esri/react-arcgis/dist/esm/components/MapComposites';
-import esriConfig from "esri/config";
 
 
 export interface RiodMapProps extends MapProps {
@@ -24,9 +24,38 @@ class RiodMap extends Component<RiodMapProps, ComponentState>  {
             view: null,
             layerDefs: props.layerDefs
         };
+        if (props.proxyUrl !== undefined) {
+            loadModules([
+                'esri/config',
+                'esri/core/urlUtils'
+            ], esriOptions)
+                .then(([esriConfig, urlUtils]) => {
 
-        esriConfig.request.proxyUrl = "";
+                    urlUtils.addProxyRule({
+                        proxyUrl: props.proxyUrl,
+                        urlPrefix: "https://services3.arcgis.com"
+                    });
+                    esriConfig.request.proxyUrl = props.proxyUrl;
 
+                    //Set up the interceptor to add the bearer token to the header
+                    esriConfig.request.interceptors.push({
+                        urls: "https://services3.arcgis.com",//This will restrict what layers we add the bearer token too
+                        before: this.esriRequestInterceptor
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+    }
+
+    //Add bearer token in here
+    esriRequestInterceptor = (ioArgs: any) => {
+        if (this.props.userIdentity !== undefined) {
+            ioArgs.requestOptions.headers = ioArgs.headers || {};
+            ioArgs.requestOptions.headers.Authorization = 'Bearer ' + this.props.userIdentity;
+            ioArgs.requestOptions.query = ioArgs.requestOptions.query || {};
+        }
     }
 
     //Handler for when the map is loaded. We attach the click handler event here.
@@ -56,7 +85,7 @@ class RiodMap extends Component<RiodMapProps, ComponentState>  {
                 return layer.title === definition.title;
             });
             //apply the definitions
-            layer.definitionExpression = definition.where;          
+            layer.definitionExpression = definition.where;
         }
     }
 
@@ -65,8 +94,8 @@ class RiodMap extends Component<RiodMapProps, ComponentState>  {
     }
 
     render() {
-        return (            
-            <WebMap id={this.state.id}  onLoad={this.handleMapLoad} />
+        return (
+            <WebMap id={this.state.id} onLoad={this.handleMapLoad} />
         );
     }
 }

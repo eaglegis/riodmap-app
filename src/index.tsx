@@ -1,4 +1,5 @@
-import { Map } from '@esri/react-arcgis';
+import "./components/config";
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import RiodMap from './components/RiodMap';
@@ -12,6 +13,8 @@ ReactDOM.render(
                 title: "Flooding",
                 where:"OBJECTID in (1,2)"
             }]}
+            proxyUrl="https://localhost:44310/proxy.ashx"
+               
         >
         </RiodMap>
     </div>
