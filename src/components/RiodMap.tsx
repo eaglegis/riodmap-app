@@ -84,8 +84,10 @@ class RiodMap extends Component<RiodMapProps, ComponentState>  {
             var layer = this.state.view.map.allLayers.find(function (layer: any) {
                 return layer.title === definition.title;
             });
+            if (layer) { 
             //apply the definitions
-            layer.definitionExpression = definition.where;
+                layer.definitionExpression = definition.where;
+            }
         }
     }
 
