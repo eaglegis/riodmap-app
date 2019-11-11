@@ -30,16 +30,18 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ## RiodMap
 
 This is the main map component, it has the following props
-id = the webmap id you want to use
-onMarkerClick = this the callback for clicking on a feature in the map
-proxyUrl = the url to the proxy which will handle authentication and filtering at a global level
-userIdentity = the bearer token to be used
-layerDefs = an array of layer definitons to filter layers at a local level. This has the form of 
-'{
-  title:"layer name"
+- id = the webmap id you want to use
+- onMarkerClick = this the callback for clicking on a feature in the map
+- proxyUrl = the url to the proxy which will handle authentication and filtering at a global level
+- userIdentity = the bearer token to be used
+- layerDefs = an array of layer definitons to filter layers at a local level. This has the form of 
+
+`{
+  title:"layer name",
   where:"any valid where clause"
-}'
+}`
 
 More details on the where clause is [here](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#definitionExpression)
 
+Details on valid SQL queries is [here](http://desktop.arcgis.com/en/arcmap/latest/map/working-with-layers/building-a-query-expression.htm#GUID-EC06FE3F-38BA-4CF2-AEAF-F69D65C7C567)
 
