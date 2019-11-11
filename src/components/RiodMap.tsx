@@ -31,17 +31,17 @@ class RiodMap extends Component<RiodMapProps, ComponentState>  {
             ], esriOptions)
                 .then(([esriConfig, urlUtils]) => {
 
-                    urlUtils.addProxyRule({
-                        proxyUrl: props.proxyUrl,
-                        urlPrefix: "https://services3.arcgis.com"
-                    });
-                    esriConfig.request.proxyUrl = props.proxyUrl;
+                    //urlUtils.addProxyRule({
+                    //    proxyUrl: props.proxyUrl,
+                    //    urlPrefix: "https://services3.arcgis.com"
+                    //});
+                   // esriConfig.request.proxyUrl = props.proxyUrl;
 
                     //Set up the interceptor to add the bearer token to the header
-                    esriConfig.request.interceptors.push({
-                        urls: "https://services3.arcgis.com",//This will restrict what layers we add the bearer token too
-                        before: this.esriRequestInterceptor
-                    });
+                    //esriConfig.request.interceptors.push({
+                    //    urls: "https://services3.arcgis.com",//This will restrict what layers we add the bearer token too
+                    //    before: this.esriRequestInterceptor
+                    //});
                 })
                 .catch(err => {
                     console.error(err);
